@@ -267,7 +267,7 @@ public class Network {
 
     }
 
-
+    //TODO COMENTAR ESTA FUNCION,
     public void find() {
         Scanner sc = new Scanner(System.in);
         String input = null;
@@ -276,42 +276,58 @@ public class Network {
                 "3-Search people born in two given dates: ");
         input = sc.nextLine();
         int x = Integer.parseInt(input);
+        System.out.println();
         System.out.print("Introduce finding term: ");
         String target = sc.nextLine();
+        ArrayList<User> data = null;
+        HashSet<User> surD;
+        if (x == 1) {
+            data = sortBandAprint(new SortBySurname(), target, "sur");
+            if (data != null) {
+                System.out.println("\nData found by searching conditions: ");
+                for (User e : data) {
+                    System.out.println(e.toString() + "\nFriends: ");
+                    surD = graph.getSingleFList(e);
+                    for (User f : surD) {
+                        System.out.println(f.getID());
+                    }
+                }
+            } else {
+                System.out.println("No data found.");
+            }
+        }
 
-
-        if (x == 1)
-            sortBandAprint(new SortBySurname(), target, "sur");
-
-        if (x == 2)
-            sortBandAprint(new SortByBirthPlace(), target, "bplc");
-
+        if (x == 2) {
+            data = sortBandAprint(new SortByBirthPlace(), target, "bplc");
+            for (User e : data)
+                System.out.println("User id: " + e.getID() + " User name: " + e.getName());
+        }
         if (x == 3) ;
 
 
     }
 
-
-    public void sortBandAprint(Comparator<User> c, String target, String op) {
+    //TODO COMENTAR ESTA FUNCION, que lo unico que hace es llamar a la busqueda binaria, dadas las condiciones de busqueda y devuelve un arraylist con los datos necesarios.
+    private ArrayList<User> sortBandAprint(Comparator<User> c, String target, String op) {
 
         Iterator itr = this.network.values().iterator();
         User[] uArr = new User[this.network.size()];
         for (int i = 0; i < this.network.size(); i++) {
             uArr[i] = (User) itr.next();
         }
+        System.out.println("Data not sorted: ");
         for (User u : uArr) {
             System.out.println(u.toString());
         }
         System.out.println();
         Quicksort.sort(uArr, c);
+        System.out.println();
 
-        User found = BinarySearch.binarySearch(uArr, target, 0, uArr.length - 1, op);
-        if (found != null) {
-            System.out.println(found.toString());
-        }
+        System.out.println("\nSorted data by given conditions: ");
         for (User u : uArr) {
-
             System.out.println(u.toString());
         }
+        ArrayList<User> found = BinarySearch.binarySearch(uArr, target, 0, uArr.length - 1, op);
+        return found;
     }
 }

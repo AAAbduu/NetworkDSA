@@ -2,17 +2,32 @@ package Algorithms;
 
 import Data.User;
 
+import java.util.ArrayList;
+
 public class BinarySearch {
 
-    public static User binarySearch(User[] arr, String target, int left, int right, String op) {
+    public static ArrayList<User> binarySearch(User[] arr, String target, int left, int right, String op) {
         if (left > right) {
             return null;
         }
+        ArrayList<User> uArr = new ArrayList<User>();
         int mid = left + (right - left) / 2;
         if (op.contentEquals("sur")) {
             if (arr[mid].getSurnames().contentEquals(target)) {
                 System.out.println("Index found: " + mid);
-                return arr[mid];
+                int i = mid;
+                while (arr[i].getSurnames().contentEquals(target)) {
+                    uArr.add(arr[i]);
+                    i++;
+                }
+                if (mid != 0) {
+                    i = mid - 1;
+                    while (arr[i].getSurnames().contentEquals(target) && i > 0) {
+                        uArr.add(arr[i]);
+                        i--;
+                    }
+                }
+                return uArr;
             }
             if (arr[mid].getSurnames().compareTo(target) < 0) {
                 //COGER la mitad de la derecha para cpntinuar la busqueda
@@ -27,7 +42,12 @@ public class BinarySearch {
         } else if (op.contentEquals("bplc")) {
             if (arr[mid].getBirthplace().contentEquals(target)) {
                 System.out.println("Index found: " + mid);
-                return arr[mid];
+                int i = mid;
+                while (arr[i].getBirthplace().contentEquals(target)) {
+                    uArr.add(arr[i]);
+                    i++;
+                }
+                return uArr;
             }
             if (arr[mid].getBirthplace().compareTo(target) < 0) {
                 //COGER la mitad de la derecha para cpntinuar la busqueda
@@ -40,7 +60,7 @@ public class BinarySearch {
                 return binarySearch(arr, target, left, mid - 1, "bplc");
             }
         }
-        return arr[mid];
+        return uArr;
     }
 
 }
