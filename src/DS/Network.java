@@ -18,7 +18,7 @@ public class Network {
     private final Graph graph;
 
 
-//TODO Pulir conceptos de hashmap. Pensar como diseñar correctamente el grafo.
+//TODO Comentar funciones y hacer tests Junit para cada metodo implementado.
 
 
     private Network() {
@@ -316,8 +316,9 @@ public class Network {
             ArrayList<User> found = BinarySearch.binarySearchBtI(uArr, target, target2, 0, uArr.length - 1);
             if (found != null) {
                 System.out.println("Data found:");
+                //TODO revisar este sort de aqui...
+                found.sort(Comparator.comparing(User::getBirthplace).thenComparing(User::getSurnames).thenComparing(User::getName));
                 User[] fD = found.toArray(new User[0]);
-                Quicksort.sort(fD, new SortByBPNS());
                 for (User u : fD) {
                     System.out.println(u.toString());
                 }
@@ -347,4 +348,76 @@ public class Network {
         ArrayList<User> found = BinarySearch.binarySearch(uArr, target, 0, uArr.length - 1, op);
         return found;
     }
+
+    //TODO Comentar esta funcion. Es el punto 9 del proyecto.
+    public void residentialFile() {
+        Stack<User> myStck = new Stack<User>();
+        System.out.print("Write the name of the file: ");
+        Scanner doc = new Scanner(System.in);
+        String path = doc.nextLine();//read from console the name of the document
+        File txtfile = new File(path);
+        Scanner users = null;
+        try {
+            users = new Scanner(txtfile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        users.nextLine();//skip the first line of the document because it has no data
+        while (users.hasNext()) {
+            HashSet<String> studyData = new HashSet<String>();
+            HashSet<String> workData = new HashSet<String>();
+            HashSet<String> movies = new HashSet<String>();
+            String userData = users.nextLine();
+            String[] data = userData.split(",");
+            String id = data[0];
+            User newUser = new User(id);
+            String name = data[1];
+            String surnames = data[2];
+            String birthdate = data[3];
+            String gender = data[4];
+            String birthplace = data[5];
+            String home = data[6];
+            String[] studyDat = data[7].split(";");
+            for (String s : studyDat) {
+                studyData.add(s);
+
+            }
+            String[] workDat = data[8].split(";");
+            for (String s : workDat) {
+                workData.add(s);
+
+            }
+            String[] movie = data[9].split(";");
+            for (String s : movie) {
+                movies.add(s);
+
+            }
+            String groupCode = data[10];
+            newUser.setName(name);
+            newUser.setSurnames(surnames);
+            newUser.setBirthDate(birthdate);
+            newUser.setGender(gender);
+            newUser.setBirthplace(birthplace);
+            newUser.setHome(home);
+            newUser.setStudyDat(studyData);
+            newUser.setWorkDat(workData);
+            newUser.setMovies(movies);
+            newUser.setGroupCode(groupCode);
+
+            myStck.add(newUser);
+        }
+        User[] net = this.network.values().toArray(new User[0]);
+        Quicksort.sort(net, new SortByBirthPlace());
+        while (!myStck.empty()) {
+            ArrayList<User> retData = BinarySearch.binarySearch(net, myStck.pop().getHome(), 0, net.length - 1, "bplc");
+            System.out.println("Data found: ");
+            for (User u : retData) {
+                System.out.println("Name: " + u.getName() + " Surnames: " + u.getSurnames() + " Birthplace: " + u.getBirthplace() + " StudyDat: " + u.getStudyDat());
+                System.out.println();
+
+            }
+        }
+
+    }
+
 }
