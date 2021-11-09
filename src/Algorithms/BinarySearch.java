@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class BinarySearch {
 
+    //TODO COmentar estos metodos. hacer tests
+
     public static ArrayList<User> binarySearch(User[] arr, String target, int left, int right, String op) {
         if (left > right) {
             return null;

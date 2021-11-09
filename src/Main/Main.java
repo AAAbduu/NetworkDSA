@@ -22,7 +22,8 @@ public class Main {
 
             switch (state) {
                 case 1:
-                    sN.readDataSet();
+                    String dataset = input.nextLine();
+                    sN.readDataSet(dataset);
                     System.out.println(sN.getNodes());
                     break;
                 case 2:

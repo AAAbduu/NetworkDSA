@@ -10,6 +10,8 @@ public class Graph {
     private int E = 0;
     private final HashMap<User, HashSet<User>> friendData;
 
+    //TODO hacer tests.
+
     public Graph() {
         this.friendData = new HashMap<User, HashSet<User>>();
     }

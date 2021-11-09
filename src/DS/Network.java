@@ -18,7 +18,7 @@ public class Network {
     private final Graph graph;
 
 
-//TODO Comentar funciones y hacer tests Junit para cada metodo implementado.
+//TODO hacer tests Junit para cada metodo implementado.
 
 
     private Network() {
@@ -207,11 +207,9 @@ public class Network {
     /**
      * Procedure that reads from a txt file and is able to load information in the social network.
      */
-    public void readDataSet() {
+    public void readDataSet(String dataset) {
         System.out.print("Write the name of the file: ");
-        Scanner doc = new Scanner(System.in);
-        String path = doc.nextLine();//read from console the name of the document
-        File txtfile = new File(path);
+        File txtfile = new File(dataset);
         Scanner users = null;
         try {
             users = new Scanner(txtfile);
@@ -265,7 +263,10 @@ public class Network {
 
     }
 
-    //TODO COMENTAR ESTA FUNCION,
+    /**
+     * Procedure that is called from the main of the program and its in charge of letting you choose which option to search by
+     * and prints the data if found and prints "No data found" if nothing is found.
+     */
     public void find() {
         Scanner sc = new Scanner(System.in);
         String input = null;
@@ -330,7 +331,15 @@ public class Network {
 
     }
 
-    //TODO COMENTAR ESTA FUNCION, que lo unico que hace es llamar a la busqueda binaria, dadas las condiciones de busqueda y devuelve un arraylist con los datos necesarios.
+    /**
+     * Function that uses binary search given a Comparator, which is based on the option chosen by the user,
+     * it also receives a target string, which is the value to be found.
+     *
+     * @param c      Comparator which is needed in order to sort the array depending on the option chosen by the user.
+     * @param target Value to be found
+     * @param op     Option chosen by the user
+     * @return ArrayList <User> which is null if nothing is found and returns the values found if somthihng is found.
+     */
     private ArrayList<User> sortBandAprint(Comparator<User> c, String target, String op) {
         User[] uArr = this.network.values().toArray(new User[0]);
         System.out.println("Data not sorted: ");
@@ -349,7 +358,11 @@ public class Network {
         return found;
     }
 
-    //TODO Comentar esta funcion. Es el punto 9 del proyecto.
+
+    /**
+     * Procedure reads a text file and extracts the hometown of the people in the txt file and searches in the dataset thats already in the
+     * network who match their birthplaces with the hometown of the people of the file.
+     */
     public void residentialFile() {
         Stack<User> myStck = new Stack<User>();
         System.out.print("Write the name of the file: ");
