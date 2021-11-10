@@ -6,8 +6,18 @@ import java.util.ArrayList;
 
 public class BinarySearch {
 
-    //TODO COmentar estos metodos. hacer tests
+    //TODO hacer tests.
 
+    /**
+     * Recursive method which given a target and a sorted array, uses binary search in order to find the information demanded by the user.
+     *
+     * @param arr    Sorted array.
+     * @param target Target to be found.
+     * @param left   Left index, at the beginning it should be 0.
+     * @param right  Right index, at the beggining it should be the lenght of the arr param -1.
+     * @param op     Option chosen to find
+     * @return ArrayList containing all the data found given the target.
+     */
     public static ArrayList<User> binarySearch(User[] arr, String target, int left, int right, String op) {
         if (left > right) {
             return null;
@@ -58,6 +68,17 @@ public class BinarySearch {
         return uArr;
     }
 
+    /**
+     * Recursive method which given two targets, expected to be dates and a sorted array, uses binary search in order to find the information demanded by the user
+     * which is between those given targets.
+     *
+     * @param arr     Sorted array.
+     * @param target  Expected to be a date, the low value of two given dates.
+     * @param target2 Expected to be a date, the high value of two given dates.
+     * @param left    Left index, at the beginning it should be 0.
+     * @param right   Right index, at the beggining it should be the lenght of the arr param -1.
+     * @return ArrayList containing all the data found given the target.
+     */
     public static ArrayList<User> binarySearchBtI(User[] arr, String target, String target2, int left, int right) {
         if (left > right) {
             return null;

@@ -6,6 +6,8 @@ import java.util.Comparator;
 
 public class Quicksort {
 
+    //TODO comentar los metodos de esta clase y hacer los test junit...
+
     private static int split(User[] list, int lo, int hi, Comparator<User> c) {
         int left = lo + 1;
         int right = hi;

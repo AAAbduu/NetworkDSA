@@ -317,9 +317,9 @@ public class Network {
             ArrayList<User> found = BinarySearch.binarySearchBtI(uArr, target, target2, 0, uArr.length - 1);
             if (found != null) {
                 System.out.println("Data found:");
-                //TODO revisar este sort de aqui...
-                found.sort(Comparator.comparing(User::getBirthplace).thenComparing(User::getSurnames).thenComparing(User::getName));
+                //TODO revisar este sort de aqui... implementado pero no estoy seguro...
                 User[] fD = found.toArray(new User[0]);
+                Quicksort.sort(fD, new SortByBSN());
                 for (User u : fD) {
                     System.out.println(u.toString());
                 }
