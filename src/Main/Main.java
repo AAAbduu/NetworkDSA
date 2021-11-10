@@ -22,14 +22,13 @@ public class Main {
 
             switch (state) {
                 case 1:
+                    System.out.print("Introduce name of the file: ");
                     String dataset = input.nextLine();
                     sN.readDataSet(dataset);
-                    System.out.println(sN.getNodes());
                     break;
                 case 2:
                     sN.addFriendsFromFile();
                     sN.printAdjacencyList();
-                    System.out.println(sN.getEdges());
                     break;
                 case 3:
                     sN.printMapData();

@@ -5,7 +5,6 @@ import Data.User;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -16,7 +15,6 @@ class NetworkTest {
     Network net = Network.getInstance();
     HashMap<String, User> network = net.getNetwork();
     User u1 = new User("u1");
-
     User u2 = new User("u2");
 
     @BeforeEach
@@ -48,6 +46,12 @@ class NetworkTest {
         HashSet<User> eU2 = net.getGraph().getSingleFList(u2);
         assertTrue(eU1.contains(u2) && eU2.contains(u1));
 
+    }
+
+    @Test
+    void readDataSet() {
+        net.readDataSet("dataset.txt");
+        assertTrue(!net.getNetwork().isEmpty());
     }
 
     @Test

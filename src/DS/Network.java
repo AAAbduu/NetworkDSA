@@ -186,13 +186,6 @@ public class Network {
         }
     }
 
-    public int getEdges() {
-        return this.graph.getE();
-    }                                       //TODO TEMPORAL METHODS TO BE REMOVED.
-
-    public int getNodes() {
-        return this.graph.getV();
-    }
 
     /**
      * Procedure prints out the information on the social network.
@@ -208,7 +201,6 @@ public class Network {
      * Procedure that reads from a txt file and is able to load information in the social network.
      */
     public void readDataSet(String dataset) {
-        System.out.print("Write the name of the file: ");
         File txtfile = new File(dataset);
         Scanner users = null;
         try {
@@ -224,41 +216,48 @@ public class Network {
             String userData = users.nextLine();
             String[] data = userData.split(",");
             String id = data[0];
-            User newUser = new User(id);
-            String name = data[1];
-            String surnames = data[2];
-            String birthdate = data[3];
-            String gender = data[4];
-            String birthplace = data[5];
-            String home = data[6];
-            String[] studyDat = data[7].split(";");
-            for (String s : studyDat) {
-                studyData.add(s);
+            try {
+                User newUser = new User(id);
+                String name = data[1];
+                String surnames = data[2];
+                String birthdate = data[3];
+                String gender = data[4];
+                String birthplace = data[5];
+                String home = data[6];
+                String[] studyDat = data[7].split(";");
+                for (String s : studyDat) {
+                    studyData.add(s);
 
+                }
+                String[] workDat = data[8].split(";");
+                for (String s : workDat) {
+                    workData.add(s);
+
+                }
+                String[] movie = data[9].split(";");
+                for (String s : movie) {
+                    movies.add(s);
+
+                }
+                String groupCode = data[10];
+                newUser.setName(name);
+                newUser.setSurnames(surnames);
+                newUser.setBirthDate(birthdate);
+                newUser.setGender(gender);
+                newUser.setBirthplace(birthplace);
+                newUser.setHome(home);
+                newUser.setStudyDat(studyData);
+                newUser.setWorkDat(workData);
+                newUser.setMovies(movies);
+                newUser.setGroupCode(groupCode);
+                this.addUser(newUser);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Information wrongly written in input file for this user...: " + data[0]);
+                System.out.println(userData);
+                continue;
             }
-            String[] workDat = data[8].split(";");
-            for (String s : workDat) {
-                workData.add(s);
 
-            }
-            String[] movie = data[9].split(";");
-            for (String s : movie) {
-                movies.add(s);
 
-            }
-            String groupCode = data[10];
-            newUser.setName(name);
-            newUser.setSurnames(surnames);
-            newUser.setBirthDate(birthdate);
-            newUser.setGender(gender);
-            newUser.setBirthplace(birthplace);
-            newUser.setHome(home);
-            newUser.setStudyDat(studyData);
-            newUser.setWorkDat(workData);
-            newUser.setMovies(movies);
-            newUser.setGroupCode(groupCode);
-
-            this.addUser(newUser);
         }
 
     }
@@ -300,6 +299,7 @@ public class Network {
             String target = sc.nextLine();
             data = sortBandAprint(new SortByBirthPlace(), target, "bplc");
             if (data != null) {
+                System.out.println("Found data: ");
                 for (User e : data)
                     System.out.println("User id: " + e.getID() + " User name: " + e.getName());
             } else {
