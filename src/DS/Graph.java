@@ -2,8 +2,7 @@ package DS;
 
 import Data.User;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class Graph {
     private int V = 0;
@@ -91,6 +90,39 @@ public class Graph {
     public int vDegree(User eUser) {
         HashSet<User> fList = friendData.get(eUser);
         return fList.size();
+    }
+//TODO REVISAR ESTE METODO DE BFS
+
+    /**
+     * Returns an iterator that performs a BFS starting at given node.
+     *
+     * @param startUser Starting node to do the BFS.
+     * @return an iterator that performs a BFS.
+     */
+    public Iterator<User> iteratorBFS(User startUser) {
+        User u;
+        Queue<User> trQ = new LinkedList<>();
+        HashSet<User> resultList = new HashSet<>();
+        if (this.friendData.containsKey(startUser) == false)
+            return resultList.iterator();
+
+        boolean[] visited = new boolean[this.V];
+        for (int i = 0; i < this.V; i++)
+            visited[i] = false;
+
+        trQ.add(startUser);
+        visited[startUser.hashCode() % this.V] = true;
+        while (!trQ.isEmpty()) {
+            u = trQ.poll();
+            resultList.addAll(this.getSingleFList(u));
+            for (User d : this.getSingleFList(u)) {
+                if (visited[d.hashCode() % this.V] == false) {
+                    trQ.add(d);
+                    visited[d.hashCode() % this.V] = true;
+                }
+            }
+        }
+        return resultList.iterator();
     }
 
 }
