@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
-
+//TODO actualizar el menu este
 
     public static void main(String[] args) {
         int state = 0;
@@ -35,11 +35,6 @@ public class Main {
                     break;
                 case 3:
                     sN.printMapData();
-                    /*Iterator<Node> miIter = sN.getGraph().iteratorBFS(new Node(sN.getNetwork().get("Gisella11")));
-                    while (miIter.hasNext()) {
-                        Node u = miIter.next();
-                        System.out.println(u.getThisUser().toString());
-                    }*/
                     break;
                 case 4:
                     sN.find();

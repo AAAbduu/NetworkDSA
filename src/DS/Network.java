@@ -1,15 +1,11 @@
 package DS;
 
-import Algorithms.BinarySearch;
-import Algorithms.Quicksort;
+import Algorithms.*;
 import Comparators.*;
 import Data.User;
 import Exceptions.UserNotRegisteredException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 
@@ -204,6 +200,7 @@ public class Network extends Graph {
         try {
             n = getNodeByUID(eUser.getID());
         } catch (UserNotRegisteredException e) {
+            System.out.println(e.toString());
         }
         this.graph.getFriendData().put(n, n.getFriendList());
         graph.incrementV();
@@ -340,7 +337,6 @@ public class Network extends Graph {
             ArrayList<Node> found = BinarySearch.binarySearchBtI(uArr, target, target2, 0, uArr.length - 1);
             if (found != null) {
                 System.out.println("Data found:");
-                //TODO revisar este sort de aqui... implementado pero no estoy seguro...
                 Node[] fD = found.toArray(new Node[0]);
                 Quicksort.sort(fD, new SortByBSN());
                 for (Node u : fD) {
