@@ -1,5 +1,6 @@
 package Algorithms;
 
+import DS.Node;
 import Data.User;
 
 import java.util.Comparator;
@@ -8,10 +9,10 @@ public class Quicksort {
 
     //TODO comentar los metodos de esta clase y hacer los test junit...
 
-    private static int split(User[] list, int lo, int hi, Comparator<User> c) {
+    private static int split(Node[] list, int lo, int hi, Comparator<Node> c) {
         int left = lo + 1;
         int right = hi;
-        User pivot = list[lo];
+        Node pivot = list[lo];
 
         while (true) {
             while (left <= right) {
@@ -35,7 +36,7 @@ public class Quicksort {
             }
 
             // swap left and right items
-            User temp = list[left];
+            Node temp = list[left];
             list[left] = list[right];
             list[right] = temp;
             //advance each one step
@@ -51,7 +52,7 @@ public class Quicksort {
         return left - 1;
     }
 
-    private static void sort(User[] list, int lo, int hi, Comparator<User> c) {
+    private static void sort(Node[] list, int lo, int hi, Comparator<Node> c) {
         if ((hi - lo) <= 0) { // fewer than 2 items
             return;
         }
@@ -61,7 +62,7 @@ public class Quicksort {
         sort(list, splitPoint + 1, hi, c);  // right subarray recursion
     }
 
-    public static void sort(User[] list, Comparator<User> c) {
+    public static void sort(Node[] list, Comparator<Node> c) {
         if (list.length <= 1) {
             return;
         }

@@ -2,6 +2,7 @@ package Main;
 
 import Comparators.SortBySurname;
 import DS.Network;
+import DS.Node;
 import Data.User;
 
 import java.util.Iterator;
@@ -34,11 +35,11 @@ public class Main {
                     break;
                 case 3:
                     sN.printMapData();
-                    Iterator<User> miIter = sN.getGraph().iteratorBFS(sN.getNetwork().get("Gisella11"));
+                    /*Iterator<Node> miIter = sN.getGraph().iteratorBFS(new Node(sN.getNetwork().get("Gisella11")));
                     while (miIter.hasNext()) {
-                        User u = miIter.next();
-                        System.out.println(u.toString());
-                    }
+                        Node u = miIter.next();
+                        System.out.println(u.getThisUser().toString());
+                    }*/
                     break;
                 case 4:
                     sN.find();

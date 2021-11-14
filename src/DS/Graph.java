@@ -7,12 +7,12 @@ import java.util.*;
 public class Graph {
     private int V = 0;
     private int E = 0;
-    private final HashMap<User, HashSet<User>> friendData;
+    private HashMap<Node, HashSet<Node>> friendData;
 
     //TODO hacer tests.
 
     public Graph() {
-        this.friendData = new HashMap<User, HashSet<User>>();
+        this.friendData = new HashMap<Node, HashSet<Node>>();
     }
 
     /**
@@ -53,7 +53,7 @@ public class Graph {
      *
      * @return HashMap containing those users linked by friendships.
      */
-    public HashMap<User, HashSet<User>> getFriendData() {
+    public HashMap<Node, HashSet<Node>> getFriendData() {
         return friendData;
     }
 
@@ -63,9 +63,10 @@ public class Graph {
      * @param eU1 User1 that adds User2.
      * @param eU2 User2 that adds User1.
      */
-    public void addConnections(User eU1, User eU2) {
-        this.friendData.get(eU1).add(eU2);
-        this.friendData.get(eU2).add(eU1);
+    public void addConnections(Node eU1, Node eU2) {
+        eU1.getFriendList().add(eU2);
+        eU2.getFriendList().add(eU1);
+        this.getFriendData().put(eU1, eU1.getFriendList());
         this.E++;
     }
 
@@ -76,10 +77,15 @@ public class Graph {
      * @param eUser User from who we want to obtain the friends list.
      * @return HashSet that includes all the friendships this user has.
      */
-    public HashSet<User> getSingleFList(User eUser) {
-        HashSet<User> fList = friendData.get(eUser);
+    public HashSet<Node> getSingleFList(Node eUser) {
+        HashSet<Node> fList = friendData.get(eUser);
         return fList;
     }
+
+    public static User retUGN(Node n) {
+        return n.getThisUser();
+    }
+
 
     /**
      * Function that allow to know the degree of a given vertex.
@@ -87,8 +93,8 @@ public class Graph {
      * @param eUser Vertex, user we want to know how many friends it has.
      * @return Degree of the vertex.
      */
-    public int vDegree(User eUser) {
-        HashSet<User> fList = friendData.get(eUser);
+    public int vDegree(Node eUser) {
+        HashSet<Node> fList = friendData.get(eUser);
         return fList.size();
     }
 //TODO REVISAR ESTE METODO DE BFS
@@ -99,10 +105,10 @@ public class Graph {
      * @param startUser Starting node to do the BFS.
      * @return an iterator that performs a BFS.
      */
-    public Iterator<User> iteratorBFS(User startUser) {
-        User u;
-        Queue<User> trQ = new LinkedList<>();
-        HashSet<User> resultList = new HashSet<>();
+    public Iterator<Node> iteratorBFS(Node startUser) {
+        Node n;
+        Queue<Node> trQ = new LinkedList<>();
+        HashSet<Node> resultList = new HashSet<>();
         if (this.friendData.containsKey(startUser) == false)
             return resultList.iterator();
 
@@ -111,14 +117,14 @@ public class Graph {
             visited[i] = false;
 
         trQ.add(startUser);
-        visited[startUser.hashCode() % this.V] = true;
+        visited[startUser.getID()] = true;
         while (!trQ.isEmpty()) {
-            u = trQ.poll();
-            resultList.addAll(this.getSingleFList(u));
-            for (User d : this.getSingleFList(u)) {
-                if (visited[d.hashCode() % this.V] == false) {
+            n = trQ.poll();
+            resultList.addAll(this.getSingleFList(n));
+            for (Node d : this.getSingleFList(n)) {
+                if (visited[d.getID()] == false) {
                     trQ.add(d);
-                    visited[d.hashCode() % this.V] = true;
+                    visited[d.getID()] = true;
                 }
             }
         }

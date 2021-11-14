@@ -4,6 +4,7 @@ import Algorithms.BinarySearch;
 import Algorithms.Quicksort;
 import Comparators.*;
 import Data.User;
+import Exceptions.UserNotRegisteredException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,8 +13,8 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class Network {
-    private final HashMap<String, User> network;
+public class Network extends Graph {
+    private final HashMap<String, Node> network;
     private static Network netInstance;
     private final Graph graph;
 
@@ -22,7 +23,7 @@ public class Network {
 
 
     private Network() {
-        this.network = new HashMap<String, User>();
+        this.network = new HashMap<String, Node>();
         this.graph = new Graph();
     }
 
@@ -43,7 +44,7 @@ public class Network {
      *
      * @return HashMap containging ids as keys and Users as values.
      */
-    public HashMap<String, User> getNetwork() {
+    public HashMap<String, Node> getNetwork() {
         return network;
     }
 
@@ -70,7 +71,7 @@ public class Network {
      * @param eU1 User1 that adds User2.
      * @param eU2 User2 that adds User1.
      */
-    public void addFriend(User eU1, User eU2) {
+    public void addFriend(Node eU1, Node eU2) {
         if (this.network.containsValue(eU1) && this.network.containsValue(eU2)) {
             graph.addConnections(eU1, eU2);
         }
@@ -94,9 +95,42 @@ public class Network {
         while (usersLinked.hasNext()) {
             String data = usersLinked.nextLine();
             String[] dataLink = data.split(",");
-            this.addFriend(this.network.get(dataLink[0]), this.network.get(dataLink[1]));
-
+            try {
+                this.addFriend(getNodeByUID(dataLink[0]), getNodeByUID(dataLink[1]));
+            } catch (UserNotRegisteredException e) {
+                System.out.println(e.toString());
+            }
         }
+    }
+
+    /**
+     * Printing friendships adjacency list.
+     */
+    public void printAdjacencyList() {
+        for (Node n : this.graph.getFriendData().keySet()) {
+            HashSet<Node> uVal = this.graph.getFriendData().get(n);
+            System.out.println();
+            for (Node e : uVal) {
+                System.out.println(n.getThisUser().getName() + "->" + e.getThisUser().getName());
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * Function that receiving a User ID, is able to find its node and returns it.
+     *
+     * @param euID String User ID
+     * @return Node which contains the User.
+     */
+    private Node getNodeByUID(String euID) throws UserNotRegisteredException {
+        Node[] list = this.network.values().toArray((new Node[0]));
+        Quicksort.sort(list, new SortByUSID());
+        ArrayList<Node> result = BinarySearch.binarySearch(list, euID, 0, list.length - 1, "eUID");
+        if (result == null) {
+            throw new UserNotRegisteredException("User is not registered in the network...");
+        }
+        return result.get(0);
     }
 
     /**
@@ -111,13 +145,13 @@ public class Network {
         try {
             FileWriter writer = new FileWriter("actualDataSet.txt");
             writer.write("idperson,name,lastname,birthdate,gender,birthplace,home,studiedat,workplaces,films,groupcode\n");
-            for (Map.Entry<String, User> entry : this.network.entrySet()) {
-                writer.write(entry.getValue().getID() + "," + entry.getValue().getName() + "," + entry.getValue().getSurnames() + ","
-                        + entry.getValue().getBirthDate() + "," + entry.getValue().getGender() + "," + entry.getValue().getBirthplace() + ","
-                        + entry.getValue().getHome() + ",");
-                studyData = entry.getValue().getStudyDat();
-                workData = entry.getValue().getWorkDat();
-                movies = entry.getValue().getMovies();
+            for (Map.Entry<String, Node> entry : this.network.entrySet()) {
+                writer.write(entry.getValue().getThisUser().getID() + "," + entry.getValue().getThisUser().getName() + "," + entry.getValue().getThisUser().getSurnames() + ","
+                        + entry.getValue().getThisUser().getBirthDate() + "," + entry.getValue().getThisUser().getGender() + "," + entry.getValue().getThisUser().getBirthplace() + ","
+                        + entry.getValue().getThisUser().getHome() + ",");
+                studyData = entry.getValue().getThisUser().getStudyDat();
+                workData = entry.getValue().getThisUser().getWorkDat();
+                movies = entry.getValue().getThisUser().getMovies();
                 n = studyData.size();
                 for (String s : studyData) {
                     if (n == 1) {
@@ -149,7 +183,7 @@ public class Network {
                     }
 
                 }
-                writer.write(entry.getValue().getGroupCode());
+                writer.write(entry.getValue().getThisUser().getGroupCode());
                 writer.write("\n");
             }
             writer.close();
@@ -165,25 +199,14 @@ public class Network {
      * @param eUser User to add into the network.
      */
     public void addUser(User eUser) { //2nd point.
-        this.network.put(eUser.getID(), eUser);
-        HashSet<User> friendList = new HashSet<User>();
-        graph.getFriendData().put(eUser, friendList);
-        graph.incrementV();
-    }
-
-    /**
-     * Printing friendships adjacency list.
-     */
-    public void printAdjacencyList() {
-        for (Map.Entry<String, User> entry : this.network.entrySet()) {
-            User uVal = entry.getValue();
-            HashMap<User, HashSet<User>> tUser = this.graph.getFriendData();
-            HashSet<User> tUsF = tUser.get(uVal);
-            for (User u : tUsF) {
-                System.out.println(uVal.getName() + "->" + u.getName());
-            }
-            System.out.println();
+        this.network.put(eUser.getID(), new Node(eUser));
+        Node n = null;
+        try {
+            n = getNodeByUID(eUser.getID());
+        } catch (UserNotRegisteredException e) {
         }
+        this.graph.getFriendData().put(n, n.getFriendList());
+        graph.incrementV();
     }
 
 
@@ -192,7 +215,7 @@ public class Network {
      */
     public void printMapData() {
         for (String s : this.network.keySet()) {
-            String userName = this.network.get(s).getName();
+            String userName = this.network.get(s).getThisUser().getName();
             System.out.println(s + " " + userName);
         }
     }
@@ -276,18 +299,18 @@ public class Network {
         int x = Integer.parseInt(input);
         System.out.println();
         System.out.print("Introduce finding term: ");
-        ArrayList<User> data = null;
-        HashSet<User> surD;
+        ArrayList<Node> data = null;
+        HashSet<Node> surD;
         if (x == 1) {
             String target = sc.nextLine();
             data = sortBandAprint(new SortBySurname(), target, "sur");
             if (data != null) {
                 System.out.println("\nData found by searching conditions: ");
-                for (User e : data) {
-                    System.out.println(e.toString() + "\nFriends: ");
+                for (Node e : data) {
+                    System.out.println(e.getThisUser().toString() + "\nFriends: ");
                     surD = graph.getSingleFList(e);
-                    for (User f : surD) {
-                        System.out.println(f.getID());
+                    for (Node f : surD) {
+                        System.out.println(f.getThisUser().getID());
                     }
                 }
             } else {
@@ -300,8 +323,8 @@ public class Network {
             data = sortBandAprint(new SortByBirthPlace(), target, "bplc");
             if (data != null) {
                 System.out.println("Found data: ");
-                for (User e : data)
-                    System.out.println("User id: " + e.getID() + " User name: " + e.getName());
+                for (Node e : data)
+                    System.out.println("User id: " + e.getThisUser().getID() + " User name: " + e.getThisUser().getName());
             } else {
                 System.out.println("No data was found");
             }
@@ -310,18 +333,18 @@ public class Network {
             String target = sc.nextLine();
             System.out.print("Please introduce the second date: ");
             String target2 = sc.nextLine();
-            User[] uArr = this.network.values().toArray(new User[0]);
+            Node[] uArr = this.network.values().toArray(new Node[0]);
             Quicksort.sort(uArr, new SortByBirthDate());
 
 
-            ArrayList<User> found = BinarySearch.binarySearchBtI(uArr, target, target2, 0, uArr.length - 1);
+            ArrayList<Node> found = BinarySearch.binarySearchBtI(uArr, target, target2, 0, uArr.length - 1);
             if (found != null) {
                 System.out.println("Data found:");
                 //TODO revisar este sort de aqui... implementado pero no estoy seguro...
-                User[] fD = found.toArray(new User[0]);
+                Node[] fD = found.toArray(new Node[0]);
                 Quicksort.sort(fD, new SortByBSN());
-                for (User u : fD) {
-                    System.out.println(u.toString());
+                for (Node u : fD) {
+                    System.out.println(u.getThisUser().toString());
                 }
             } else {
                 System.out.println("No data found.");
@@ -340,21 +363,21 @@ public class Network {
      * @param op     Option chosen by the user
      * @return ArrayList <User> which is null if nothing is found and returns the values found if somthihng is found.
      */
-    private ArrayList<User> sortBandAprint(Comparator<User> c, String target, String op) {
-        User[] uArr = this.network.values().toArray(new User[0]);
+    private ArrayList<Node> sortBandAprint(Comparator<Node> c, String target, String op) {
+        Node[] uArr = this.network.values().toArray(new Node[0]);
         System.out.println("Data not sorted: ");
-        for (User u : uArr) {
-            System.out.println(u.toString());
+        for (Node u : uArr) {
+            System.out.println(u.getThisUser().toString());
         }
         System.out.println();
         Quicksort.sort(uArr, c);
         System.out.println();
 
         System.out.println("\nSorted data by given conditions: ");
-        for (User u : uArr) {
-            System.out.println(u.toString());
+        for (Node u : uArr) {
+            System.out.println(u.getThisUser().toString());
         }
-        ArrayList<User> found = BinarySearch.binarySearch(uArr, target, 0, uArr.length - 1, op);
+        ArrayList<Node> found = BinarySearch.binarySearch(uArr, target, 0, uArr.length - 1, op);
         return found;
     }
 
@@ -419,13 +442,13 @@ public class Network {
 
             myStck.add(newUser);
         }
-        User[] net = this.network.values().toArray(new User[0]);
+        Node[] net = this.network.values().toArray(new Node[0]);
         Quicksort.sort(net, new SortByBirthPlace());
         while (!myStck.empty()) {
-            ArrayList<User> retData = BinarySearch.binarySearch(net, myStck.pop().getHome(), 0, net.length - 1, "bplc");
+            ArrayList<Node> retData = BinarySearch.binarySearch(net, myStck.pop().getHome(), 0, net.length - 1, "bplc");
             System.out.println("Data found: ");
-            for (User u : retData) {
-                System.out.println("Name: " + u.getName() + " Surnames: " + u.getSurnames() + " Birthplace: " + u.getBirthplace() + " StudyDat: " + u.getStudyDat());
+            for (Node u : retData) {
+                System.out.println("Name: " + u.getThisUser().getName() + " Surnames: " + u.getThisUser().getSurnames() + " Birthplace: " + u.getThisUser().getBirthplace() + " StudyDat: " + u.getThisUser().getStudyDat());
                 System.out.println();
 
             }

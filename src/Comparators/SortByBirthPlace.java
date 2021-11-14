@@ -1,12 +1,13 @@
 package Comparators;
 
+import DS.Node;
 import Data.User;
 
 import java.util.Comparator;
 
-public class SortByBirthPlace implements Comparator<User> {
+public class SortByBirthPlace implements Comparator<Node> {
     @Override
-    public int compare(User o1, User o2) {
-        return o1.getBirthplace().compareTo(o2.getBirthplace());
+    public int compare(Node o1, Node o2) {
+        return o1.getThisUser().getBirthplace().compareTo(o2.getThisUser().getBirthplace());
     }
 }
