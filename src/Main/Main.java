@@ -4,6 +4,7 @@ import Comparators.SortBySurname;
 import DS.Network;
 import DS.Node;
 import Data.User;
+import Exceptions.UserNotRegisteredException;
 
 import java.util.Iterator;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public class Main {
         while (state != -1) {
             Network sN = Network.getInstance();
             System.out.println("\n                      MY_MENU");
-            System.out.println("1. Load ‘people’ into the network ...\n2. Load ‘relationships’...\n3. Print out people \n4. Search ...\n5.Write in a txt file actual DataSet.");
+            System.out.println("1. Load ‘people’ into the network\n2. Load ‘relationships’\n3. Print out people \n4. Search\n5.Write in a txt file actual DataSet.\n6.Residential file.\n7.BFS check");
             Scanner input = new Scanner(System.in);
             System.out.print("Select an option: ");
             inputS = input.nextLine();
@@ -41,6 +42,24 @@ public class Main {
                     break;
                 case 5:
                     sN.outPutInfo();
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    System.out.print("Introduce the starting user ID please: ");
+                    String target = input.nextLine();
+                    try {
+                        Node n = sN.getNodeByUID(target);
+                        if (n != null) {
+                            System.out.print(n.getThisUser().getID() + "->");
+                            Iterator<Node> miter = sN.getGraph().iteratorBFS(n);
+                            while (miter.hasNext()) {
+                                System.out.print(miter.next().getThisUser().getID() + "->");
+                            }
+                        }
+                    } catch (UserNotRegisteredException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }

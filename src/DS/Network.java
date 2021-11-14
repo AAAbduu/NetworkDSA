@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class Network extends Graph {
+public class Network {
     private final HashMap<String, Node> network;
     private static Network netInstance;
     private final Graph graph;
@@ -119,7 +119,7 @@ public class Network extends Graph {
      * @param euID String User ID
      * @return Node which contains the User.
      */
-    private Node getNodeByUID(String euID) throws UserNotRegisteredException {
+    public Node getNodeByUID(String euID) throws UserNotRegisteredException {
         Node[] list = this.network.values().toArray((new Node[0]));
         Quicksort.sort(list, new SortByUSID());
         ArrayList<Node> result = BinarySearch.binarySearch(list, euID, 0, list.length - 1, "eUID");

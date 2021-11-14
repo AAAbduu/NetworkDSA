@@ -108,8 +108,8 @@ public class Graph {
     public Iterator<Node> iteratorBFS(Node startUser) {
         Node n;
         Queue<Node> trQ = new LinkedList<>();
-        HashSet<Node> resultList = new HashSet<>();
-        if (this.friendData.containsKey(startUser) == false)
+        LinkedList<Node> resultList = new LinkedList<>();
+        if (!this.friendData.containsKey(startUser))
             return resultList.iterator();
 
         boolean[] visited = new boolean[this.V];
@@ -120,9 +120,10 @@ public class Graph {
         visited[startUser.getID()] = true;
         while (!trQ.isEmpty()) {
             n = trQ.poll();
-            resultList.addAll(this.getSingleFList(n));
             for (Node d : this.getSingleFList(n)) {
-                if (visited[d.getID()] == false) {
+                if (!resultList.contains(d) && !d.equals(startUser))
+                    resultList.add(d);
+                if (!visited[d.getID()]) {
                     trQ.add(d);
                     visited[d.getID()] = true;
                 }
@@ -130,5 +131,6 @@ public class Graph {
         }
         return resultList.iterator();
     }
+
 
 }
