@@ -65,7 +65,5 @@ class NetworkTest {
 
     }
 
-    @Test
-    void residentialFile() {
-    }
+
 }

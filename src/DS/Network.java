@@ -15,9 +15,6 @@ public class Network {
     private final Graph graph;
 
 
-//TODO hacer tests Junit para cada metodo implementado.
-
-
     private Network() {
         this.network = new HashMap<String, Node>();
         this.graph = new Graph();
@@ -451,5 +448,15 @@ public class Network {
         }
 
     }
+
+
+    public static ArrayList<Graph> sameKprofile() {
+        ArrayList<Graph> clases = new ArrayList<>();
+
+        //TODO NO ENTIENO Y NO SE HACERLO.
+
+        return null;
+    }
+
 
 }
