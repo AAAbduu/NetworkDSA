@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
-//TODO actualizar el menu este
+//TODO actualizar el menu este, hacer el punto 10 y el documento
 
     public static void main(String[] args) {
         int state = 0;

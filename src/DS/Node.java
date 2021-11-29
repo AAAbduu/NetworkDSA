@@ -3,13 +3,12 @@ package DS;
 import Data.User;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 public class Node {
     private User thisUser;
     private static int gID = 0;
     private int ID;
-    HashSet<Node> relations;
+    private HashSet<Node> relations;
 
 
     public Node(User eU) {
