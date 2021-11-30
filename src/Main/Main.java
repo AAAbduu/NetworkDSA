@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
-//TODO actualizar el menu este, hacer el punto 10 y el documento
 
     public static void main(String[] args) {
         int state = 0;
@@ -18,7 +17,7 @@ public class Main {
         while (state != -1) {
             Network sN = Network.getInstance();
             System.out.println("\n                      MY_MENU");
-            System.out.println("1. Load ‘people’ into the network\n2. Load ‘relationships’\n3. Print out people \n4. Search\n5.Write in a txt file actual DataSet.\n6.Residential file.\n7.BFS check");
+            System.out.println("1. Load ‘people’ into the network\n2. Load ‘relationships’\n3. Print out people \n4. Search\n5.Write in a txt file actual DataSet.\n6.Residential file.\n7.BFS check\n8.Find those users that like the same movies.");
             Scanner input = new Scanner(System.in);
             System.out.print("Select an option: ");
             inputS = input.nextLine();
@@ -44,6 +43,7 @@ public class Main {
                     sN.outPutInfo();
                     break;
                 case 6:
+                    sN.residentialFile();
                     break;
                 case 7:
                     System.out.print("Introduce the starting user ID please: ");
@@ -57,6 +57,14 @@ public class Main {
                                 System.out.print(miter.next().getThisUser().getID() + "->");
                             }
                         }
+                    } catch (UserNotRegisteredException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case 8:
+                    try {
+                        sN.sameKprofile();
                     } catch (UserNotRegisteredException e) {
                         e.printStackTrace();
                     }

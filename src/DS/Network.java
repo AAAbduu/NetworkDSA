@@ -450,12 +450,39 @@ public class Network {
     }
 
 
-    public static ArrayList<Graph> sameKprofile() {
-        ArrayList<Graph> clases = new ArrayList<>();
+    public void sameKprofile() throws UserNotRegisteredException {
+        HashMap<HashSet<String>, ArrayList<Node>> retData = new HashMap<>();
+        Node n = null;
+        User u = null;
+        HashSet<String> m = new HashSet<>();
+        Stack<HashSet<String>> s = new Stack<>();
+        for (String key : this.network.keySet()) {
+            ArrayList<Node> nArr = new ArrayList<>();
+            n = this.getNodeByUID(key);
+            nArr.add(n);
+            m = n.getThisUser().getMovies();
+            for (String key2 : this.network.keySet()) {
+                Node n1 = this.getNodeByUID(key2);
+                if (!key.contentEquals(key2) && n1.getThisUser().getMovies().equals(m) && !s.contains(m)) {
+                    nArr.add(n1);
+                }
+            }
+            s.add(m);
+            retData.put(m, nArr);
 
-        //TODO NO ENTIENO Y NO SE HACERLO.
+        }
 
-        return null;
+        for (Map.Entry<HashSet<String>, ArrayList<Node>> entry : retData.entrySet()) {
+            HashSet<String> key = entry.getKey();
+            ArrayList<Node> arr = entry.getValue();
+
+            System.out.print(key.toString() + "->");
+            for (Node i : arr) {
+                System.out.print(i.getThisUser().getName() + "->");
+            }
+            System.out.println();
+        }
+
     }
 
 
