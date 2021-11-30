@@ -1,10 +1,9 @@
 package Data;
 
-import javax.sound.midi.SysexMessage;
 import java.util.HashSet;
-import java.util.Scanner;
 
-public class User implements Comparable<User> {
+
+public class User {
     private final String ID;
     private String name;
     private String surnames;
@@ -131,10 +130,5 @@ public class User implements Comparable<User> {
                 ", movies=" + movies +
                 ", groupCode='" + groupCode + '\'' +
                 '}';
-    }
-
-    @Override
-    public int compareTo(User o) {
-        return 0;
     }
 }

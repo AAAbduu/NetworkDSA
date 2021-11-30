@@ -449,7 +449,11 @@ public class Network {
 
     }
 
-
+    /**
+     * Method which creates Lists that contains Users that like the same set of movies.
+     *
+     * @throws UserNotRegisteredException If User is not found in the network.
+     */
     public void sameKprofile() throws UserNotRegisteredException {
         HashMap<HashSet<String>, ArrayList<Node>> retData = new HashMap<>();
         Node n = null;
