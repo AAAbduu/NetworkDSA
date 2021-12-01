@@ -58,7 +58,7 @@ public class BinarySearch {
                 }
                 if (mid != 0) {
                     i = mid - 1;
-                    while (i >= 0 && arr[i].getThisUser().getSurnames().contentEquals(target)) {
+                    while (i >= 0 && arr[i].getThisUser().getBirthplace().contentEquals(target)) {
                         uArr.add(arr[i]);
                         i--;
                     }
@@ -72,6 +72,31 @@ public class BinarySearch {
             } else if (arr[mid].getThisUser().getBirthplace().compareTo(target) > 0) {
                 //System.out.println("Looking left...");
                 return binarySearch(arr, target, left, mid - 1, "bplc");
+            }
+        } else if (op.contentEquals("home")) {
+            if (arr[mid].getThisUser().getHome().contentEquals(target)) {
+                int i = mid;
+                while (i < arr.length && arr[i].getThisUser().getHome().contentEquals(target)) {
+                    uArr.add(arr[i]);
+                    i++;
+
+                }
+                if (mid != 0) {
+                    i = mid - 1;
+                    while (i >= 0 && arr[i].getThisUser().getHome().contentEquals(target)) {
+                        uArr.add(arr[i]);
+                        i--;
+                    }
+                    return uArr;
+                }
+            }
+
+            if (arr[mid].getThisUser().getHome().compareTo(target) < 0) {
+                //COGER la mitad de la derecha para cpntinuar la busqueda
+                return binarySearch(arr, target, mid + 1, right, "home");
+            } else if (arr[mid].getThisUser().getHome().compareTo(target) > 0) {
+                //System.out.println("Looking left...");
+                return binarySearch(arr, target, left, mid - 1, "home");
             }
         } else if (op.contentEquals("eUID")) {
             if (arr[mid].getThisUser().getID().contentEquals(target)) {

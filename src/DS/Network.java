@@ -380,7 +380,7 @@ public class Network {
      * network who match their birthplaces with the hometown of the people of the file.
      */
     public void residentialFile() {
-        Stack<User> myStck = new Stack<User>();
+        Stack<Node> myStck = new Stack<>();
         System.out.print("Write the name of the file: ");
         Scanner doc = new Scanner(System.in);
         String path = doc.nextLine();//read from console the name of the document
@@ -397,51 +397,25 @@ public class Network {
             HashSet<String> workData = new HashSet<String>();
             HashSet<String> movies = new HashSet<String>();
             String userData = users.nextLine();
-            String[] data = userData.split(",");
-            String id = data[0];
-            User newUser = new User(id);
-            String name = data[1];
-            String surnames = data[2];
-            String birthdate = data[3];
-            String gender = data[4];
-            String birthplace = data[5];
-            String home = data[6];
-            String[] studyDat = data[7].split(";");
-            for (String s : studyDat) {
-                studyData.add(s);
+            String data = userData;
+            String id = data;
 
+            Node n = null;
+            try {
+                n = this.getNodeByUID(id);
+                myStck.add(n);
+            } catch (UserNotRegisteredException e) {
+                System.out.println("User in residential file is not in the network!");
             }
-            String[] workDat = data[8].split(";");
-            for (String s : workDat) {
-                workData.add(s);
 
-            }
-            String[] movie = data[9].split(";");
-            for (String s : movie) {
-                movies.add(s);
-
-            }
-            String groupCode = data[10];
-            newUser.setName(name);
-            newUser.setSurnames(surnames);
-            newUser.setBirthDate(birthdate);
-            newUser.setGender(gender);
-            newUser.setBirthplace(birthplace);
-            newUser.setHome(home);
-            newUser.setStudyDat(studyData);
-            newUser.setWorkDat(workData);
-            newUser.setMovies(movies);
-            newUser.setGroupCode(groupCode);
-
-            myStck.add(newUser);
         }
         Node[] net = this.network.values().toArray(new Node[0]);
-        Quicksort.sort(net, new SortByBirthPlace());
+        Quicksort.sort(net, new SortByHome());
         while (!myStck.empty()) {
-            ArrayList<Node> retData = BinarySearch.binarySearch(net, myStck.pop().getHome(), 0, net.length - 1, "bplc");
+            ArrayList<Node> retData = BinarySearch.binarySearch(net, myStck.pop().getThisUser().getBirthplace(), 0, net.length - 1, "home");
             System.out.println("Data found: ");
             for (Node u : retData) {
-                System.out.println("Name: " + u.getThisUser().getName() + " Surnames: " + u.getThisUser().getSurnames() + " Birthplace: " + u.getThisUser().getBirthplace() + " StudyDat: " + u.getThisUser().getStudyDat());
+                System.out.println("Name: " + u.getThisUser().getName() + " Surnames: " + u.getThisUser().getSurnames() + " Current home: " + u.getThisUser().getHome() + " StudyDat: " + u.getThisUser().getStudyDat());
                 System.out.println();
 
             }
@@ -465,15 +439,16 @@ public class Network {
             n = this.getNodeByUID(key);
             nArr.add(n);
             m = n.getThisUser().getMovies();
-            for (String key2 : this.network.keySet()) {
-                Node n1 = this.getNodeByUID(key2);
-                if (!key.contentEquals(key2) && n1.getThisUser().getMovies().equals(m) && !s.contains(m)) {
-                    nArr.add(n1);
+            if (!s.contains(m)) {
+                for (String key2 : this.network.keySet()) {
+                    Node n1 = this.getNodeByUID(key2);
+                    if (!key.contentEquals(key2) && n1.getThisUser().getMovies().equals(m) && !s.contains(m)) {
+                        nArr.add(n1);
+                    }
                 }
+                s.add(m);
+                retData.put(m, nArr);
             }
-            s.add(m);
-            retData.put(m, nArr);
-
         }
 
         for (Map.Entry<HashSet<String>, ArrayList<Node>> entry : retData.entrySet()) {
