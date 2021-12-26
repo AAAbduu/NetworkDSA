@@ -10,6 +10,6 @@ public class SortByUSID implements Comparator<Node> {
 
     @Override
     public int compare(Node o1, Node o2) {
-        return o1.getThisUser().getID().compareTo(o2.getThisUser().getID());
+        return o1.getUser().getId().compareTo(o2.getUser().getId());
     }
 }

@@ -1,7 +1,6 @@
 package Algorithms;
 
 import DS.Node;
-import Data.User;
 
 import java.util.Comparator;
 

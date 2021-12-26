@@ -4,39 +4,24 @@ import Data.User;
 
 import java.util.*;
 
-public class Graph {
-    private int V = 0;
-    private int E = 0;
-    private HashMap<Node, HashSet<Node>> friendData;
-
-    //TODO hacer tests.
-
-    public Graph() {
-        this.friendData = new HashMap<Node, HashSet<Node>>();
-    }
+public interface Graph<T> {
 
     /**
      * Function returns number of vertices in the graph.
      *
      * @return V Number of vertices.
      */
-    public int getV() {
-        return V;
-    }
+    public int getV();
 
     /**
      * Adds one vertex when a user is added to the network.
      */
-    public void incrementV() {
-        this.V++;
-    }
+    public void incrementV();
 
     /**
      * Subtracts one vertex when a user is removed from the network.
      */
-    public void decrementV() {
-        this.V--;
-    }
+    public void decrementV();
 
 
     /**
@@ -44,93 +29,44 @@ public class Graph {
      *
      * @return E Number of vertices in the graph.
      */
-    public int getE() {
-        return E;
-    }
+    public int getE();
 
     /**
-     * Funtion returns the HashMap that contains each Users friendships.
+     * Funtion returns the HashMap that contains each Nodes linking.
      *
-     * @return HashMap containing those users linked by friendships.
+     * @return HashMap containing the information of the nodes and its links.
      */
-    public HashMap<Node, HashSet<Node>> getFriendData() {
-        return friendData;
-    }
+    public HashMap<T, HashSet<T>> getFriendData();
+
 
     /**
-     * Method is in charge of linking two users as friends by adding them respectively in each ones list of friends.
+     * Method is in charge of linking two Nodes.
      *
-     * @param eU1 User1 that adds User2.
-     * @param eU2 User2 that adds User1.
+     * @param eU1 First node adding node eU2.
+     * @param eU2 Second node adding node eU1.
      */
-    public void addConnections(Node eU1, Node eU2) {
-        eU1.getFriendList().add(eU2);
-        eU2.getFriendList().add(eU1);
-        this.getFriendData().put(eU1, eU1.getFriendList());
-        this.E++;
-    }
-
-    /**
-     * This function returns a list of friends of a single user given this user.
-     * Interpreted as the function that returns an iterable object containing users friendships.
-     *
-     * @param eUser User from who we want to obtain the friends list.
-     * @return HashSet that includes all the friendships this user has.
-     */
-    public HashSet<Node> getSingleFList(Node eUser) {
-        HashSet<Node> fList = friendData.get(eUser);
-        return fList;
-    }
-
-    public static User retUGN(Node n) {
-        return n.getThisUser();
-    }
+    public void addConnections(T eU1, T eU2);
 
 
     /**
      * Function that allow to know the degree of a given vertex.
      *
-     * @param eUser Vertex, user we want to know how many friends it has.
+     * @param eUser IS the vertex from which we want to know the degree.
      * @return Degree of the vertex.
      */
-    public int vDegree(Node eUser) {
-        HashSet<Node> fList = friendData.get(eUser);
-        return fList.size();
-    }
-//TODO REVISAR ESTE METODO DE BFS
+    public int vDegree(T eUser);
 
     /**
-     * Returns an iterator that performs a BFS starting at given node.
+     * Function that finds the shortest path between two given nodes.
      *
-     * @param startUser Starting node to do the BFS.
-     * @return an iterator that performs a BFS.
+     * @param s Source node from where we begin the search.
+     * @param t Target node.
+     * @return ArrayList with all the nodes that connect the two given ones in the shortest path.
      */
-    public Iterator<Node> iteratorBFS(Node startUser) {
-        Node n;
-        Queue<Node> trQ = new LinkedList<>();
-        LinkedList<Node> resultList = new LinkedList<>();
-        if (!this.friendData.containsKey(startUser))
-            return resultList.iterator();
+    public ArrayList<T> shortPath(T s, T t);
 
-        boolean[] visited = new boolean[this.V];
-        for (int i = 0; i < this.V; i++)
-            visited[i] = false;
 
-        trQ.add(startUser);
-        visited[startUser.getID()] = true;
-        while (!trQ.isEmpty()) {
-            n = trQ.poll();
-            for (Node d : this.getSingleFList(n)) {
-                if (!resultList.contains(d) && !d.equals(startUser))
-                    resultList.add(d);
-                if (!visited[d.getID()]) {
-                    trQ.add(d);
-                    visited[d.getID()] = true;
-                }
-            }
-        }
-        return resultList.iterator();
-    }
+
 
 
 }

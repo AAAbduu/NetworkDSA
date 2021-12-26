@@ -3,50 +3,48 @@ package DS;
 import Data.User;
 
 import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class Node {
-    private User thisUser;
-    private static int gID = 0;
-    private int ID;
-    private HashSet<Node> relations;
 
+    private User user;
+    private Set<Node> friends;
 
-    public Node(User eU) {
-        thisUser = eU;
-        this.ID = gID;
-        gID++;
-        relations = new HashSet<>();
-
+    public Node(User user) {
+        this.user = user;
+        friends = new HashSet<>();
     }
 
-    public static int getgID() {
-        return gID;
+    public User getUser() {
+        return user;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void addFriend(Node friend) {
+        this.friends.add(friend);
     }
 
-    public HashSet<Node> getFriendList() {
-        return relations;
-    }
-
-
-    public User getThisUser() {
-        return thisUser;
-    }
-
-    public int getID() {
-        return ID;
+    public Set<Node> getFriends() {
+        return friends;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof Node)) return false;
-        Node node = (Node) o;
-        return getID() == node.getID();
+        if (o == null || getClass() != o.getClass()) return false;
+        final Node node = (Node) o;
+        return user.equals(node.user);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(user);
+    }
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "user=" + user +
+                '}';
+    }
 }

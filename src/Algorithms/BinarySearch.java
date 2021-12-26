@@ -1,7 +1,6 @@
 package Algorithms;
 
 import DS.Node;
-import Data.User;
 
 import java.util.ArrayList;
 
@@ -26,39 +25,39 @@ public class BinarySearch {
         ArrayList<Node> uArr = new ArrayList<>();
         int mid = left + (right - left) / 2;
         if (op.contentEquals("sur")) {
-            if (arr[mid].getThisUser().getSurnames().contentEquals(target)) {
+            if (arr[mid].getUser().getSurnames().contentEquals(target)) {
                 int i = mid;
-                while (i < arr.length && arr[i].getThisUser().getSurnames().contentEquals(target)) {
+                while (i < arr.length && arr[i].getUser().getSurnames().contentEquals(target)) {
                     uArr.add(arr[i]);
                     i++;
                 }
                 if (mid != 0) {
                     i = mid - 1;
-                    while (i >= 0 && arr[i].getThisUser().getSurnames().contentEquals(target)) {
+                    while (i >= 0 && arr[i].getUser().getSurnames().contentEquals(target)) {
                         uArr.add(arr[i]);
                         i--;
                     }
                 }
                 return uArr;
             }
-            if (arr[mid].getThisUser().getSurnames().compareTo(target) < 0) {
+            if (arr[mid].getUser().getSurnames().compareTo(target) < 0) {
                 //COGER la mitad de la derecha para cpntinuar la busqueda
                 return binarySearch(arr, target, mid + 1, right, "sur");
-            } else if (arr[mid].getThisUser().getSurnames().compareTo(target) > 0) {
+            } else if (arr[mid].getUser().getSurnames().compareTo(target) > 0) {
                 //System.out.println("Looking left...");
                 return binarySearch(arr, target, left, mid - 1, "sur");
             }
         } else if (op.contentEquals("bplc")) {
-            if (arr[mid].getThisUser().getBirthplace().contentEquals(target)) {
+            if (arr[mid].getUser().getBirthplace().contentEquals(target)) {
                 int i = mid;
-                while (i < arr.length && arr[i].getThisUser().getBirthplace().contentEquals(target)) {
+                while (i < arr.length && arr[i].getUser().getBirthplace().contentEquals(target)) {
                     uArr.add(arr[i]);
                     i++;
 
                 }
                 if (mid != 0) {
                     i = mid - 1;
-                    while (i >= 0 && arr[i].getThisUser().getBirthplace().contentEquals(target)) {
+                    while (i >= 0 && arr[i].getUser().getBirthplace().contentEquals(target)) {
                         uArr.add(arr[i]);
                         i--;
                     }
@@ -66,24 +65,24 @@ public class BinarySearch {
                 }
             }
 
-            if (arr[mid].getThisUser().getBirthplace().compareTo(target) < 0) {
+            if (arr[mid].getUser().getBirthplace().compareTo(target) < 0) {
                 //COGER la mitad de la derecha para cpntinuar la busqueda
                 return binarySearch(arr, target, mid + 1, right, "bplc");
-            } else if (arr[mid].getThisUser().getBirthplace().compareTo(target) > 0) {
+            } else if (arr[mid].getUser().getBirthplace().compareTo(target) > 0) {
                 //System.out.println("Looking left...");
                 return binarySearch(arr, target, left, mid - 1, "bplc");
             }
         } else if (op.contentEquals("home")) {
-            if (arr[mid].getThisUser().getHome().contentEquals(target)) {
+            if (arr[mid].getUser().getHome().contentEquals(target)) {
                 int i = mid;
-                while (i < arr.length && arr[i].getThisUser().getHome().contentEquals(target)) {
+                while (i < arr.length && arr[i].getUser().getHome().contentEquals(target)) {
                     uArr.add(arr[i]);
                     i++;
 
                 }
                 if (mid != 0) {
                     i = mid - 1;
-                    while (i >= 0 && arr[i].getThisUser().getHome().contentEquals(target)) {
+                    while (i >= 0 && arr[i].getUser().getHome().contentEquals(target)) {
                         uArr.add(arr[i]);
                         i--;
                     }
@@ -91,22 +90,22 @@ public class BinarySearch {
                 }
             }
 
-            if (arr[mid].getThisUser().getHome().compareTo(target) < 0) {
+            if (arr[mid].getUser().getHome().compareTo(target) < 0) {
                 //COGER la mitad de la derecha para cpntinuar la busqueda
                 return binarySearch(arr, target, mid + 1, right, "home");
-            } else if (arr[mid].getThisUser().getHome().compareTo(target) > 0) {
+            } else if (arr[mid].getUser().getHome().compareTo(target) > 0) {
                 //System.out.println("Looking left...");
                 return binarySearch(arr, target, left, mid - 1, "home");
             }
         } else if (op.contentEquals("eUID")) {
-            if (arr[mid].getThisUser().getID().contentEquals(target)) {
+            if (arr[mid].getUser().getId().contentEquals(target)) {
                 uArr.add(arr[mid]);
                 return uArr;
             }
-            if (arr[mid].getThisUser().getID().compareTo(target) < 0) {
+            if (arr[mid].getUser().getId().compareTo(target) < 0) {
                 //COGER la mitad de la derecha para cpntinuar la busqueda
                 return binarySearch(arr, target, mid + 1, right, "eUID");
-            } else if (arr[mid].getThisUser().getID().compareTo(target) > 0) {
+            } else if (arr[mid].getUser().getId().compareTo(target) > 0) {
                 //System.out.println("Looking left...");
                 return binarySearch(arr, target, left, mid - 1, "eUID");
             }
@@ -134,18 +133,18 @@ public class BinarySearch {
         ArrayList<Node> uArr = new ArrayList<>();
         int mid = left + (right - left) / 2;
 
-        if (Integer.parseInt(arr[mid].getThisUser().getBirthDate().split("-")[2]) >= Integer.parseInt(target)
-                && Integer.parseInt(arr[mid].getThisUser().getBirthDate().split("-")[2]) <= Integer.parseInt(target2)) {
+        if (Integer.parseInt(arr[mid].getUser().getBirthDate().split("-")[2]) >= Integer.parseInt(target)
+                && Integer.parseInt(arr[mid].getUser().getBirthDate().split("-")[2]) <= Integer.parseInt(target2)) {
             //System.out.println("Index found: " + mid);
             int i = mid;
-            while (i < arr.length && Integer.parseInt(target) <= Integer.parseInt(arr[i].getThisUser().getBirthDate().split("-")[2])
-                    && Integer.parseInt(arr[i].getThisUser().getBirthDate().split("-")[2]) <= Integer.parseInt(target2)) {
+            while (i < arr.length && Integer.parseInt(target) <= Integer.parseInt(arr[i].getUser().getBirthDate().split("-")[2])
+                    && Integer.parseInt(arr[i].getUser().getBirthDate().split("-")[2]) <= Integer.parseInt(target2)) {
                 uArr.add(arr[i]);
                 i++;
             }
             if (mid != 0) {
                 i = mid - 1;
-                while (i >= 0 && Integer.parseInt(arr[i].getThisUser().getBirthDate().split("-")[2]) >= Integer.parseInt(target)
+                while (i >= 0 && Integer.parseInt(arr[i].getUser().getBirthDate().split("-")[2]) >= Integer.parseInt(target)
                 ) {
                     uArr.add(arr[i]);
                     i--;
@@ -153,10 +152,10 @@ public class BinarySearch {
 
                 return uArr;
             }
-        } else if (Integer.parseInt(arr[mid].getThisUser().getBirthDate().split("-")[2]) < Integer.parseInt(target)) {
+        } else if (Integer.parseInt(arr[mid].getUser().getBirthDate().split("-")[2]) < Integer.parseInt(target)) {
             //COGER la mitad de la derecha para cpntinuar la busqueda
             return binarySearchBtI(arr, target, target2, mid + 1, right);
-        } else if (Integer.parseInt(arr[mid].getThisUser().getBirthDate().split("-")[2]) > Integer.parseInt(target)) {
+        } else if (Integer.parseInt(arr[mid].getUser().getBirthDate().split("-")[2]) > Integer.parseInt(target)) {
             //System.out.println("Looking left...");
             return binarySearchBtI(arr, target, target2, left, mid - 1);
         }
