@@ -13,7 +13,9 @@ public class ShortestPath {
     private final Queue<Node> toVisit;
 
     public static Path calculate(Node source, Node target) throws PathNotFoundException {
-        return new ShortestPath(source, target).calculate();
+        if (!source.equals(target))
+            return new ShortestPath(source, target).calculate();
+        return new Path(source);
     }
 
     private ShortestPath(Node source, Node target) {

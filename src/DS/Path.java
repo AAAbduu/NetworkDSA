@@ -15,10 +15,12 @@ public class Path {
         this.nodes = nodes;
     }
 
-    public void print() {
+    public String print() {
+        String result = "";
         for (Node n : nodes) {
-            System.out.print("->" + n.getUser().getId());
+            result = result + "->" + n.getUser().getId();
         }
+        return result;
     }
 
 }

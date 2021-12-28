@@ -18,6 +18,8 @@ class SocialNetworkTest {
     private SocialNetwork socialNetwork = new SocialNetwork();
     private User u1 = new User("u1");
     private User u2 = new User("u2");
+    private User u3 = new User("u3");
+    private User u4 = new User("u4");
 
     @Test
     void addUser() throws UserNotFoundException {
@@ -61,8 +63,30 @@ class SocialNetworkTest {
         socialNetwork.addUser(u2);
         socialNetwork.addConnection(u1, u2);
 
-        Path path = socialNetwork.shortestPath(u1, u2);
-        path.print();
+        Path path = socialNetwork.shortestPath(u1.getId(), u2.getId());
+        String result = path.print();
+        System.out.println(result);
+
+        assertTrue(result.contentEquals("->u1->u2"));
+    }
+
+    @Test
+    void LongestPath() throws UserNotFoundException, PathNotFoundException {
+        socialNetwork.addUser(u1);
+        socialNetwork.addUser(u2);
+        socialNetwork.addUser(u3);
+        socialNetwork.addUser(u4);
+        socialNetwork.addConnection(u1, u2);
+        socialNetwork.addConnection(u2, u3);
+        socialNetwork.addConnection(u3, u4);
+        socialNetwork.addConnection(u1, u4);
+        socialNetwork.addConnection(u1, u3);
+
+        Path path = socialNetwork.longestPath(u2.getId(), u4.getId());
+        String result = path.print();
+        System.out.println(result);
+
+        assertTrue(result.contentEquals("->u2->u1->u3->u4"));
     }
 
 }

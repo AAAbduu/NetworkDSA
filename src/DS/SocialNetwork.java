@@ -334,10 +334,28 @@ public class SocialNetwork {
 
     // BFS
 
+    /**
+     * Function that calculates the shortest path between two users of the SocialNetwork. If the path does not exist, throws an exception PathNotFoundException.
+     *
+     * @param s Source node, first user.
+     * @param t Target node, second user.
+     * @return Path object type, which is the path between those given users.
+     * @throws UserNotFoundException If any of the users are not found.
+     * @throws PathNotFoundException If the path between the given users is not found.
+     */
+
     public Path shortestPath(final String s, final String t) throws UserNotFoundException, PathNotFoundException {
         return shortestPath(findUser(s), findUser(t));
     }
 
+
+    /**
+     * Function that given a users id, checks if user is in the SocialNetwork, if found returns it, if not found, throws an exception.
+     *
+     * @param userId User to be found.
+     * @return User
+     * @throws UserNotFoundException If user is not found in the SocialNetwork.
+     */
     private User findUser(final String userId) throws UserNotFoundException {
         User user = usersbyId.get(userId);
         if (user != null) {
@@ -346,10 +364,50 @@ public class SocialNetwork {
         throw new UserNotFoundException(user);
     }
 
-    public Path shortestPath(final User s, final User t) throws UserNotFoundException, PathNotFoundException {
+
+    /**
+     * Function that calculates the shortest path between two given Users.
+     *
+     * @param s Source user.
+     * @param t Target user.
+     * @return Path, shortest path between the two given users.
+     * @throws UserNotFoundException If one of the users is missing from the SocialNetwork.
+     * @throws PathNotFoundException If no path is found between the given users.
+     */
+    private Path shortestPath(final User s, final User t) throws UserNotFoundException, PathNotFoundException {
         Node source = getNode(s);
         Node target = getNode(t);
         return ShortestPath.calculate(source, target);
+    }
+
+
+    /**
+     * Function that calculates the longest path between two given Users.
+     *
+     * @param s Source user.
+     * @param t Target user.
+     * @return Path, longest path between the two given users.
+     * @throws UserNotFoundException If one of the users is missing from the SocialNetwork.
+     * @throws PathNotFoundException If no path is found between the given users.
+     */
+    private Path longestPath(final User s, final User t) throws UserNotFoundException, PathNotFoundException {
+        Node source = getNode(s);
+        Node target = getNode(t);
+        return LongestPath.calculate(source, target);
+    }
+
+    /**
+     * Function that calculates the longest path between two users of the SocialNetwork. If the path does not exist, throws an exception PathNotFoundException.
+     *
+     * @param s Source node, first user.
+     * @param t Target node, second user.
+     * @return Path object type, which is the path between those given users.
+     * @throws UserNotFoundException If any of the users are not found.
+     * @throws PathNotFoundException If the path between the given users is not found.
+     */
+
+    public Path longestPath(final String s, final String t) throws UserNotFoundException, PathNotFoundException {
+        return longestPath(findUser(s), findUser(t));
     }
 
 }
