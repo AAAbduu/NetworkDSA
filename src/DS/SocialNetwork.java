@@ -7,24 +7,22 @@ import Comparators.SortByBirthDate;
 import Comparators.SortByBirthPlace;
 import Comparators.SortByHome;
 import Comparators.SortBySurname;
+import Data.Node;
 import Data.User;
 import Exceptions.PathNotFoundException;
 import Exceptions.UserNotFoundException;
+import PathFinders.LongestPath;
+import PathFinders.ShortestPath;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
@@ -408,6 +406,10 @@ public class SocialNetwork {
 
     public Path longestPath(final String s, final String t) throws UserNotFoundException, PathNotFoundException {
         return longestPath(findUser(s), findUser(t));
+    }
+
+    public Clique getCliques() {
+        return CliqueCalculator.calculate(this);
     }
 
 }

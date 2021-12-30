@@ -1,6 +1,6 @@
 package Algorithms;
 
-import DS.Node;
+import Data.Node;
 
 import java.util.ArrayList;
 

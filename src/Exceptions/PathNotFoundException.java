@@ -1,6 +1,6 @@
 package Exceptions;
 
-import DS.Node;
+import Data.Node;
 
 public class PathNotFoundException extends Exception {
     private final Node source;

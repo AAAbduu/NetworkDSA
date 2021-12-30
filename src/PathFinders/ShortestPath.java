@@ -1,5 +1,7 @@
-package DS;
+package PathFinders;
 
+import DS.Path;
+import Data.Node;
 import Exceptions.PathNotFoundException;
 
 import java.util.*;
@@ -8,9 +10,9 @@ public class ShortestPath {
 
     private final Node source;
     private final Node target;
-    private final Map<Node, Node> previous;
-    private final Set<Node> visited;
-    private final Queue<Node> toVisit;
+    private final Map<Node, Node> previous = new HashMap();
+    private final Set<Node> visited = new HashSet<>();
+    private final Queue<Node> toVisit = new LinkedList<>();
 
     public static Path calculate(Node source, Node target) throws PathNotFoundException {
         if (!source.equals(target))
@@ -21,10 +23,6 @@ public class ShortestPath {
     private ShortestPath(Node source, Node target) {
         this.source = source;
         this.target = target;
-
-        previous = new HashMap();
-        visited = new HashSet<>();
-        toVisit = new LinkedList<>();
     }
 
     private Path calculate() throws PathNotFoundException {

@@ -1,7 +1,6 @@
 package Comparators;
 
-import DS.Node;
-import Data.User;
+import Data.Node;
 
 import java.util.Comparator;
 
