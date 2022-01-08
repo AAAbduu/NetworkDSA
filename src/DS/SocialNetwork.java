@@ -9,6 +9,7 @@ import Comparators.SortByHome;
 import Comparators.SortBySurname;
 import Data.Node;
 import Data.User;
+import Exceptions.CurrentNodeDoesNotBelong;
 import Exceptions.PathNotFoundException;
 import Exceptions.UserNotFoundException;
 import PathFinders.LongestPath;
@@ -18,14 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 
 public class SocialNetwork {
@@ -171,7 +165,7 @@ public class SocialNetwork {
             if (data != null) {
                 System.out.println("Found data: ");
                 for (Node e : data)
-                    System.out.println("User id: " + e.getUser().getId() + " User name: " + e.getUser().getName());
+                    System.out.println("User id: " + e.getUser().getId() + " User surnname: " + e.getUser().getSurnames());
             } else {
                 System.out.println("No data was found");
             }
@@ -188,9 +182,11 @@ public class SocialNetwork {
             if (found != null) {
                 System.out.println("Data found:");
                 Node[] fD = found.toArray(new Node[0]);
-                Quicksort.sort(fD, new SortByBSN());
+                found.sort(Comparator.comparing((Node p) -> p.getUser().getBirthplace())
+                        .thenComparing(p -> p.getUser().getSurnames())
+                        .thenComparing(p -> p.getUser().getName()));
                 for (Node u : fD) {
-                    System.out.println(u.getUser().toString());
+                    System.out.println(u.getUser().getId());
                 }
             } else {
                 System.out.println("No data found.");
@@ -408,8 +404,36 @@ public class SocialNetwork {
         return longestPath(findUser(s), findUser(t));
     }
 
-    public Clique getCliques() {
-        return CliqueCalculator.calculate(this);
+    public List<Clique> getAllCliques() throws CurrentNodeDoesNotBelong {
+        List<Clique> dataCliques = new ArrayList<>();
+
+
+        for (Node n : this.getNodes().values()) {
+            try {
+                int size = n.getFriends().size();
+                Set<Node> noGo = new HashSet<>();
+                Set<Node> nFriends = new HashSet<>();
+                nFriends.addAll(n.getFriends());
+                Clique tClique = CliqueCalculator.calculateClique(n, nFriends);
+                noGo.addAll(tClique.getNodes());
+                nFriends.addAll(n.getFriends());
+                nFriends.removeAll(noGo);
+                size = size - (tClique.getNodes().size() - 1);
+                dataCliques.add(tClique);
+                while (size != 0) {
+                    tClique = CliqueCalculator.calculateClique(n, nFriends);
+                    noGo.addAll(tClique.getNodes());
+                    nFriends.addAll(n.getFriends());
+                    nFriends.removeAll(noGo);
+                    size = size - (tClique.getNodes().size() - 1);
+                    dataCliques.add(tClique);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+
+        return dataCliques;
     }
 
 }

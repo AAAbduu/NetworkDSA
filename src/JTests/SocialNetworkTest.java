@@ -1,14 +1,18 @@
 package JTests;
 
+import DS.Clique;
 import DS.SocialNetwork;
 import Data.Node;
 import DS.Path;
 import Data.User;
+import Exceptions.CurrentNodeDoesNotBelong;
 import Exceptions.PathNotFoundException;
 import Exceptions.UserNotFoundException;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +24,7 @@ class SocialNetworkTest {
     private User u2 = new User("u2");
     private User u3 = new User("u3");
     private User u4 = new User("u4");
+    private User u5 = new User("u5");
 
     @Test
     void addUser() throws UserNotFoundException {
@@ -214,12 +219,60 @@ class SocialNetworkTest {
     }
 
     @Test
-    void simpleClique() throws UserNotFoundException {
+    void simpleClique() throws UserNotFoundException, CurrentNodeDoesNotBelong {
         socialNetwork.addUser(u1);
         socialNetwork.addUser(u2);
-        socialNetwork.addConnection(u1, u2);
-        socialNetwork.getCliques();
+        socialNetwork.addUser(u3);
 
+        socialNetwork.addConnection(u1, u2);
+        socialNetwork.addConnection(u1, u3);
+        socialNetwork.addConnection(u2, u3);
+
+        List<Clique> listC = socialNetwork.getAllCliques();
+
+        Set<Integer> hcode = new HashSet<>();
+
+        for (Clique cl : listC) {
+            if (!hcode.contains(cl.hashCode())) {
+                cl.print();
+                hcode.add(cl.hashCode());
+                assertEquals("->u1->u2->u3", cl.toString());
+            }
+        }
+
+    }
+
+
+    @Test
+    void complexClique() throws UserNotFoundException, CurrentNodeDoesNotBelong {
+        socialNetwork.addUser(u1);
+        socialNetwork.addUser(u2);
+        socialNetwork.addUser(u3);
+        socialNetwork.addUser(u4);
+        socialNetwork.addUser(u5);
+
+
+        socialNetwork.addConnection(u1, u2);
+        socialNetwork.addConnection(u1, u3);
+        socialNetwork.addConnection(u1, u4);
+        socialNetwork.addConnection(u2, u3);
+        socialNetwork.addConnection(u2, u4);
+        socialNetwork.addConnection(u3, u4);
+
+        socialNetwork.addConnection(u3, u5);
+        List<Clique> listC = socialNetwork.getAllCliques();
+
+        Set<Integer> hcode = new HashSet<>();
+
+        for (Clique cl : listC) {
+            if (!hcode.contains(cl.hashCode())) {
+                if (cl.getNodes().size() >= 4) {
+                    cl.print();
+                    assertEquals("->u1->u2->u3->u4", cl.toString());
+                }
+                hcode.add(cl.hashCode());
+            }
+        }
 
     }
 

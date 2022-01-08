@@ -1,57 +1,57 @@
 package DS;
 
 import Data.Node;
+import Exceptions.CurrentNodeDoesNotBelong;
 import Exceptions.PathNotFoundException;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CliqueCalculator {
 
-    private final SocialNetwork sN;
-
-    private CliqueCalculator(SocialNetwork sN) {
-        this.sN = sN;
-    }
-
-    public static Clique calculate(SocialNetwork sN) {
-        return new CliqueCalculator(sN).calculateClique();
-    }
-
-    public Clique calculateClique() {
-        return getAllCliques(null, Collections.emptySet(), Collections.emptySet());
+    public static Clique calculateClique(Node node, Set<Node> nodesFriends) throws CurrentNodeDoesNotBelong {
+        List<Node> sM = new ArrayList();
+        return getAllCliques(node, sM, nodesFriends);
 
     }
 
-    private Clique getAllCliques(Node current, Set<Node> toGo, Set<Node> noGo) {
-        if (current != null && current.getFriends().equals(toGo)) {
-            return new Clique(new Path(current));
+    private static Clique getAllCliques(Node current, List<Node> shouldMatch, Set<Node> nodesCanGo) throws CurrentNodeDoesNotBelong {
+        Clique currentClique = null;
+        if (nodesCanGo.isEmpty() || current.getFriends().size() < shouldMatch.size()) {
+            shouldMatch.add(current);
+            return new Clique(new Path(shouldMatch));
         }
-        Clique tClique = null;
-        for (Node n : sN.getNodes().values()) {
 
-            Set<Node> nFriends = n.getFriends();
-            Set<Node> visited = new HashSet<>();
-            for (Node f : n.getFriends()) {
-                try {
-                    if (!noGo.contains(n)) {
-                        Set<Node> sMatch = new HashSet<>();
-                        sMatch.addAll(nFriends);
-                        sMatch.remove(f);
-                        sMatch.add(n);
-                        visited.add(n);
-                        Clique currentClique = getAllCliques(f, sMatch, visited);
-                    }
-                } catch (Exception e) {
-                    //IGNORE
+        shouldMatch.add(current);
+
+
+        for (Node n : current.getFriends()) {
+            try {
+
+                if (!shouldMatch.contains(n) && n.getFriends().containsAll(shouldMatch) && nodesCanGo.contains(n)) {
+                    List<Node> tNsM = new ArrayList<>();
+                    tNsM.addAll(shouldMatch);
+                    nodesCanGo.remove(n);
+                    currentClique = getAllCliques(n, tNsM, nodesCanGo);
+
+                } else {
+                    nodesCanGo.remove(n);
+
                 }
+            } catch (Exception e) {
+                //IGNORE, CURRENT NODE IS DISCARTED.
             }
         }
-        if (current != null) {
-            return new Clique(new Path(current).add(tClique));
+        if (current.getFriends().containsAll(shouldMatch)) {
+            shouldMatch.add(current);
+            return new Clique(new Path(shouldMatch));
         }
-        return null;
+
+
+        if (current.getFriends().isEmpty()) {
+            throw new CurrentNodeDoesNotBelong(current);
+        }
+
+        return new Clique(new Path(currentClique.getNodes()));
     }
 
 }

@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 public class Quicksort {
 
-    //TODO comentar los metodos de esta clase y hacer los test junit...
+    //TODO comentar los metodos de esta clase
 
     private static int split(Node[] list, int lo, int hi, Comparator<Node> c) {
         int left = lo + 1;
@@ -34,31 +34,31 @@ public class Quicksort {
                 break;
             }
 
-            // swap left and right items
+
             Node temp = list[left];
             list[left] = list[right];
             list[right] = temp;
-            //advance each one step
+
             left++;
             right--;
         }
 
-        // swap pivot with left-1 position
+
         list[lo] = list[left - 1];
         list[left - 1] = pivot;
-        // return the split point
+
 
         return left - 1;
     }
 
     private static void sort(Node[] list, int lo, int hi, Comparator<Node> c) {
-        if ((hi - lo) <= 0) { // fewer than 2 items
+        if ((hi - lo) <= 0) {
             return;
         }
 
         int splitPoint = split(list, lo, hi, c);
-        sort(list, lo, splitPoint - 1, c);  // left subarray recursion
-        sort(list, splitPoint + 1, hi, c);  // right subarray recursion
+        sort(list, lo, splitPoint - 1, c);
+        sort(list, splitPoint + 1, hi, c);
     }
 
     public static void sort(Node[] list, Comparator<Node> c) {

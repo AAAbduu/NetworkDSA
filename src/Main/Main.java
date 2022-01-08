@@ -1,17 +1,23 @@
 package Main;
 
+import DS.Clique;
+import DS.Path;
 import DS.SocialNetwork;
+import Data.Node;
 import Data.User;
+import Exceptions.CurrentNodeDoesNotBelong;
+import Exceptions.PathNotFoundException;
 import Exceptions.UserNotFoundException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserNotFoundException, PathNotFoundException, CurrentNodeDoesNotBelong {
         int state = -1;
         SocialNetwork sN = new SocialNetwork();
         Scanner input = new Scanner(System.in);
@@ -27,6 +33,7 @@ public class Main {
                             + "7. Shortest path between 2 users.\n"
                             + "8. Find those users that like the same movies.\n"
                             + "9. Find largest chain.\n"
+                            + "10. Find all Cliques in the graph with more than 4 nodes\n"
                             + "0. Exit\n"
                             + "Select an option: ", input)
             );
@@ -69,12 +76,26 @@ public class Main {
                         e.printStackTrace();
                     }
                     break;
-//                case 9:
-//                    Node start = askForNode("Introduce the starting user ID please: ", input, sN);
-//                    Node target = askForNode("Introduce the ending user ID please: ", input, sN);
-//                    ArrayList<Node> path = sN.longestPath(start, target);
-//                    sN.printPath(path);
-//                    break;
+                case 9:
+                    String start = requestInput("Introduce the starting user ID please: ", input);
+                    String target = requestInput("Introduce the ending user ID please: ", input);
+                    Path path = sN.longestPath(start, target);
+                    path.print();
+                    break;
+                case 10:
+                    List<Clique> listC = sN.getAllCliques();
+
+                    Set<Integer> hcode = new HashSet<>();
+
+                    for (Clique cl : listC) {
+                        if (!hcode.contains(cl.hashCode())) {
+                            if (cl.getNodes().size() > 4) {
+                                cl.print();
+                                hcode.add(cl.hashCode());
+                            }
+                        }
+                    }
+                    break;
             }
         }
     }

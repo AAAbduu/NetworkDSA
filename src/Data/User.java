@@ -77,16 +77,16 @@ public class User {
 
             }
             String groupCode = data[10];
-            newUser.setName(name);
-            newUser.setSurnames(surnames);
-            newUser.setBirthDate(birthdate);
-            newUser.setGender(gender);
-            newUser.setBirthplace(birthplace);
-            newUser.setHome(home);
-            newUser.setStudyDat(studyData);
-            newUser.setWorkDat(workData);
-            newUser.setMovies(movies);
-            newUser.setGroupCode(groupCode);
+            if (name != null) newUser.setName(name);
+            if (surnames != null) newUser.setSurnames(surnames);
+            if (birthdate != null) newUser.setBirthDate(birthdate);
+            if (gender != null) newUser.setGender(gender);
+            if (birthplace != null) newUser.setBirthplace(birthplace);
+            if (home != null) newUser.setHome(home);
+            if (studyData != null) newUser.setStudyDat(studyData);
+            if (workData != null) newUser.setWorkDat(workData);
+            if (movies != null) newUser.setMovies(movies);
+            if (groupCode != null) newUser.setGroupCode(groupCode);
             return newUser;
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new InvalidUserStringException(userData);
