@@ -21,7 +21,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ * Class containing the data structure of a Social Network.
+ *
+ * @author Abdu
+ * @author Agus
+ */
 public class SocialNetwork {
 
     private final Map<String, User> usersbyId;
@@ -61,7 +66,7 @@ public class SocialNetwork {
      * Procedure that reads all the dataSet in the network and outputs all the information
      * in a txt file named actualDataSet.txt.
      */
-    public void outPutInfo() { //4th point.
+    public void outPutInfo() {
         int n = 0;
         HashSet<String> studyData = new HashSet<String>();
         HashSet<String> workData = new HashSet<String>();
@@ -232,7 +237,7 @@ public class SocialNetwork {
         Stack<Node> myStck = new Stack<>();
         System.out.print("Write the name of the file: ");
         Scanner doc = new Scanner(System.in);
-        String path = doc.nextLine();//read from console the name of the document
+        String path = doc.nextLine();
         File txtfile = new File(path);
         Scanner users = null;
         try {
@@ -240,7 +245,7 @@ public class SocialNetwork {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        users.nextLine();//skip the first line of the document because it has no data
+        users.nextLine();
         while (users.hasNext()) {
             HashSet<String> studyData = new HashSet<String>();
             HashSet<String> workData = new HashSet<String>();
@@ -315,18 +320,31 @@ public class SocialNetwork {
     }
 
     //GRAPH METHODS START HERE
+
+    /**
+     * Procedure adds an edge between the two given nodes.
+     *
+     * @param u1 String id of the User to be linked with user u2.
+     * @param u2 String id of the User to be linked with user u1.
+     * @throws UserNotFoundException
+     */
     public void addConnection(final String u1, final String u2) throws UserNotFoundException {
         addConnection(findUser(u1), findUser(u2));
     }
 
+    /**
+     * Procedure adds an edge between the two given nodes.
+     *
+     * @param u1 User to be linked with user u2.
+     * @param u2 User to be linked with user u1.
+     * @throws UserNotFoundException
+     */
     public void addConnection(final User u1, final User u2) throws UserNotFoundException {
         Node n1 = getNode(u1);
         Node n2 = getNode(u2);
         n1.addFriend(n2);
         n2.addFriend(n1);
     }
-
-    // BFS
 
     /**
      * Function that calculates the shortest path between two users of the SocialNetwork. If the path does not exist, throws an exception PathNotFoundException.
@@ -399,11 +417,16 @@ public class SocialNetwork {
      * @throws UserNotFoundException If any of the users are not found.
      * @throws PathNotFoundException If the path between the given users is not found.
      */
-
     public Path longestPath(final String s, final String t) throws UserNotFoundException, PathNotFoundException {
         return longestPath(findUser(s), findUser(t));
     }
 
+    /**
+     * Function which goes through all nodes in the graph and calculates all the Cliques there might be.
+     *
+     * @return List containing all Cliques calculated.
+     * @throws CurrentNodeDoesNotBelong Exception indicating may be any friend of current node might not belong to the clique that is being constructed.
+     */
     public List<Clique> getAllCliques() throws CurrentNodeDoesNotBelong {
         List<Clique> dataCliques = new ArrayList<>();
 

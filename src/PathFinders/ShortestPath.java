@@ -6,6 +6,12 @@ import Exceptions.PathNotFoundException;
 
 import java.util.*;
 
+/**
+ * Own class implementation of the shortest path finder between two given nodes.
+ *
+ * @author Agus
+ * @author Abdu
+ */
 public class ShortestPath {
 
     private final Node source;
@@ -14,17 +20,34 @@ public class ShortestPath {
     private final Set<Node> visited = new HashSet<>();
     private final Queue<Node> toVisit = new LinkedList<>();
 
+    /**
+     * Main function to be called from the main program.
+     * @param source Source Node.
+     * @param target Target Node.
+     * @return Path containing all the nodes.
+     * @throws PathNotFoundException If there is no path between the given nodes.
+     */
     public static Path calculate(Node source, Node target) throws PathNotFoundException {
         if (!source.equals(target))
             return new ShortestPath(source, target).calculate();
         return new Path(source);
     }
 
+    /**
+     * Class constructor.
+     * @param source Source Node.
+     * @param target Target Node.
+     */
     private ShortestPath(Node source, Node target) {
         this.source = source;
         this.target = target;
     }
 
+    /**
+     * Function that calculates the path using a simple bfs through the graph.
+     * @return Path from source Node to target Node.
+     * @throws PathNotFoundException If there is no path between the given nodes.
+     */
     private Path calculate() throws PathNotFoundException {
         visited.add(source);
         toVisit.add(source);
@@ -49,6 +72,11 @@ public class ShortestPath {
         throw new PathNotFoundException(source, target);
     }
 
+    /**
+     * If path is found, it should be reversed.
+     *
+     * @return Corrected Path between the previously given Nodes.
+     */
     private Path constructPath() {
         List<Node> reversePath = new ArrayList();
         Node current = target;

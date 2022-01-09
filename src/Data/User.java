@@ -9,6 +9,12 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * Own class implementation of a User data structure.
+ *
+ * @author Abdu
+ * @author Agus
+ */
 public class User {
 
     private final String id;
@@ -27,6 +33,12 @@ public class User {
         this.id = id;
     }
 
+    /**
+     * Creating users from a txt file.
+     *
+     * @param fileName Given txt file name.
+     * @return Set of Users read in the file given.
+     */
     public static Set<User> fromFile(final String fileName) {
         Scanner scanner = null;
         try {
@@ -34,7 +46,7 @@ public class User {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        scanner.nextLine();//skip the first line of the document because it has no data
+        scanner.nextLine();
         Set<User> users = new HashSet<>();
         while (scanner.hasNext()) {
             String userData = scanner.nextLine();
@@ -47,6 +59,13 @@ public class User {
         return users;
     }
 
+    /**
+     * Function to parse a User reading its correspongin line of data in the file.
+     *
+     * @param userData Users data line in the file.
+     * @return User with the data read in the line.
+     * @throws InvalidUserStringException If the line is not correctly written or the data is corrupt, throws this Exception.
+     */
     public static User parse(final String userData) throws InvalidUserStringException {
         HashSet<String> studyData = new HashSet<String>();
         HashSet<String> workData = new HashSet<String>();

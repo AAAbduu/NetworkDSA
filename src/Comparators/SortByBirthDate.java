@@ -1,7 +1,9 @@
 package Comparators;
 
 import Data.Node;
-
+/**
+ * Class which implements a Comparator which is used to sort data comparing in this case the birthday of the users.
+ */
 import java.util.Comparator;
 
     public class SortByBirthDate implements Comparator<Node> {

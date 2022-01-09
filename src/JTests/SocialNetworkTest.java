@@ -46,7 +46,7 @@ class SocialNetworkTest {
 
     @Test
     void readDataSet() {
-        for (User user : User.fromFile("dataset.txt")) {
+        for (User user : User.fromFile("src/datatxt/dataset.txt")) {
             socialNetwork.addUser(user);
         }
         assertTrue(!socialNetwork.getNodes().isEmpty());
@@ -54,7 +54,7 @@ class SocialNetworkTest {
 
     @Test
     void outPutInfo() {
-        for (User user : User.fromFile("dataset.txt")) {
+        for (User user : User.fromFile("src/datatxt/dataset.txt")) {
             socialNetwork.addUser(user);
         }
         socialNetwork.outPutInfo();

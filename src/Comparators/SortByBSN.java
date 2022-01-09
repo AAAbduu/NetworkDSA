@@ -4,6 +4,9 @@ import Data.Node;
 
 import java.util.Comparator;
 
+/**
+ * Class which implements a Comparator which is used to sort data comparing in this case by birthplace, then by name and then by surname of the users.
+ */
 public class SortByBSN implements Comparator<Node> {
 
     @Override

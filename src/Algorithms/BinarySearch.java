@@ -4,6 +4,13 @@ import Data.Node;
 
 import java.util.ArrayList;
 
+
+/**
+ * Own binary search implementation in Java.
+ *
+ * @author Abdu
+ * @author Agus
+ */
 public class BinarySearch {
 
 
