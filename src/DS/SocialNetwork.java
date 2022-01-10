@@ -2,7 +2,7 @@ package DS;
 
 import Algorithms.BinarySearch;
 import Algorithms.Quicksort;
-import Comparators.SortByBSN;
+import CliqueOperations.CliqueCalculator;
 import Comparators.SortByBirthDate;
 import Comparators.SortByBirthPlace;
 import Comparators.SortByHome;

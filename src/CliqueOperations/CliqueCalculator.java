@@ -1,5 +1,7 @@
-package DS;
+package CliqueOperations;
 
+import DS.Clique;
+import DS.Path;
 import Data.Node;
 import Exceptions.CurrentNodeDoesNotBelong;
 
@@ -59,7 +61,7 @@ public class CliqueCalculator {
 
                 }
             } catch (Exception e) {
-                //IGNORE, CURRENT NODE IS DISCARTED.
+                //IGNORE, CURRENT NODE IS DISCARDED.
             }
         }
         if (current.getFriends().containsAll(shouldMatch)) {
